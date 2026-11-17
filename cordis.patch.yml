@@ -1,0 +1,18 @@
+# dsh-pwsh7 — pin the shell executor to PowerShell 7.
+#
+# The pwsh-sandbox row owns the executable every pwsh tool call runs through.
+# A loader patch replaces the row's whole config, so this stays limited to
+# pwshPath: the row has no other config in the shipped bundle, and the runtime
+# plugin re-checks the resolved executable at every boot.
+- id: pwsh-sandbox
+  name: '@deepseek-ai/dsh-pwsh-sandbox'
+  config:
+    pwshPath: !!js (() => { const fs = process.getBuiltinModule('node:fs'); const path = process.getBuiltinModule('node:path'); const env = process.env; const join = (folder, rest) => path.join(folder, rest); const list = [env.DSH_PWSH7_PATH, join(env.ProgramFiles || 'C:\\Program Files', 'PowerShell\\7\\pwsh.exe')]; if (env.LOCALAPPDATA) { list.push(join(env.LOCALAPPDATA, 'Programs\\PowerShell\\7\\pwsh.exe'), join(env.LOCALAPPDATA, 'Microsoft\\WindowsApps\\pwsh.exe')); } for (const entry of String(env.PATH || '').split(';')) { const folder = entry.trim().replace(/^"|"$/g, ''); if (folder) list.push(join(folder, 'pwsh.exe')); } for (const candidate of list) { if (!candidate) continue; try { const stat = fs.lstatSync(candidate); if (stat.isFile() || stat.isSymbolicLink()) return candidate; } catch {} } return 'pwsh'; })()
+
+- insert:
+    - id: pwsh7
+      name: dsh-pwsh7
+      disabled: !!js process.platform !== 'win32'
+      config:
+        path: ''
+        strict: true

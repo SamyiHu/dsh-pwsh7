@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "PowerShell 7 only",
+    "description": "Pins the pwsh tool to PowerShell 7 and never falls back to Windows PowerShell 5.1. On load it probes the configured path, DSH_PWSH7_PATH, the standard PowerShell 7 install locations and PATH, runs the candidate to confirm version 7 or newer, then pins the shell executor to that executable and puts its folder first on PATH. If PowerShell 7 is missing, shell commands fail with a clear error instead of running 5.1. Turn the plugin off to restore DSH's default resolution."
+  }
+}

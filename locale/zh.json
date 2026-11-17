@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "PowerShell 7 专用",
+    "description": "把 DSH 的 pwsh 工具固定到 PowerShell 7，不再回退到系统自带的 Windows PowerShell 5.1。启动时会依次检查配置里的 path、环境变量 DSH_PWSH7_PATH、PowerShell 7 的常见安装位置和 PATH，实际运行确认版本 ≥ 7 后把该可执行文件固定给 shell 执行器，并把它的目录放到 PATH 最前面。找不到 PowerShell 7 时命令会直接报错，而不是悄悄用 5.1。关闭插件即恢复 DSH 默认的解析方式。"
+  }
+}
